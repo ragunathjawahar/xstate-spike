@@ -20,21 +20,18 @@ import io.redgreen.kstate.contract.State
 object GitHubReposStateMachine
 
 sealed class GitHubReposState : State {
-  @On(event = Resolve::class, next = Next(state = Success::class))
-  @On(event = Reject::class, next = Next(state = Failure::class))
+  @On(Resolve::class, Next(state = Success::class))
+  @On(Reject::class, Next(state = Failure::class))
   object FetchingGitHubRepos : GitHubReposState()
 
   @Final
-  data class Success(
-    val repos: List<GitHubRepo>
-  ) : GitHubReposState()
+  data class Success(val repos: List<GitHubRepo>) : GitHubReposState()
 
   @On(
-    event = Retry::class,
-    next = Next(
-      state = FetchingGitHubRepos::class,
-      effects = [FetchGitHubRepos::class]
-    )
+    Retry::class,
+    Next(state = FetchingGitHubRepos::class, effects = [FetchGitHubRepos::class])
   )
-  object Failure : GitHubReposState()
+  data class Failure(
+    val failure: FetchGitHubRepos.Failure
+  ) : GitHubReposState()
 }

@@ -7,10 +7,14 @@ import io.redgreen.kstate.contract.Event
 
 sealed class GitHubReposEvent : Event {
   @EffectEvent(FetchGitHubRepos::class)
-  data class Resolve(val repos: List<GitHubRepo>) : GitHubReposEvent()
+  data class Resolve(
+    val repos: List<GitHubRepo>
+  ) : GitHubReposEvent()
 
   @EffectEvent(FetchGitHubRepos::class)
-  object Reject : GitHubReposEvent()
+  data class Reject(
+    val failure: FetchGitHubRepos.Failure
+  ) : GitHubReposEvent()
 
   @UiEvent
   object Retry : GitHubReposEvent()
