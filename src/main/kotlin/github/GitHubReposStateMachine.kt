@@ -13,12 +13,15 @@ import io.redgreen.kstate.annotation.StateMachine
 import io.redgreen.kstate.contract.State
 
 @StateMachine
-@Initial(FetchingGitHubRepos::class, FetchGitHubRepos::class)
+@Initial(
+  state = FetchingGitHubRepos::class,
+  effects = [FetchGitHubRepos::class]
+)
 object GitHubReposStateMachine
 
 sealed class GitHubReposState : State {
-  @On(Resolve::class, Next(Success::class))
-  @On(Reject::class, Next(Failure::class))
+  @On(event = Resolve::class, next = Next(state = Success::class))
+  @On(event = Reject::class, next = Next(state = Failure::class))
   object FetchingGitHubRepos : GitHubReposState()
 
   @Final
@@ -26,6 +29,12 @@ sealed class GitHubReposState : State {
     val repos: List<GitHubRepo>
   ) : GitHubReposState()
 
-  @On(Retry::class, next = Next(FetchingGitHubRepos::class, FetchGitHubRepos::class))
+  @On(
+    event = Retry::class,
+    next = Next(
+      state = FetchingGitHubRepos::class,
+      effects = [FetchGitHubRepos::class]
+    )
+  )
   object Failure : GitHubReposState()
 }
