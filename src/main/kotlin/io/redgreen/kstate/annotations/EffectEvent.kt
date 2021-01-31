@@ -1,10 +1,8 @@
 package io.redgreen.kstate.annotations
 
 import io.redgreen.kstate.Effect
-import io.redgreen.kstate.State
 import kotlin.reflect.KClass
 
-annotation class Initial(
-  val state: KClass<out State>,
+annotation class EffectEvent(
   vararg val effects: KClass<out Effect>
 )

@@ -1,3 +1,5 @@
+import github.GitHubReposStateMachine
+
 fun main() {
-  println("Hello World!")
+  println(GitHubReposStateMachine::class.java)
 }

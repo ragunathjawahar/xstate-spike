@@ -1,21 +1,24 @@
 package github
 
-import github.GitHubReposEvent.Fetch
+import github.GitHubReposEffect.FetchGitHubRepos
 import github.GitHubReposEvent.Reject
 import github.GitHubReposEvent.Resolve
 import github.GitHubReposEvent.Retry
+import github.GitHubReposState.FetchingGitHubRepos
 import io.redgreen.kstate.State
 import io.redgreen.kstate.annotations.Final
 import io.redgreen.kstate.annotations.Initial
+import io.redgreen.kstate.annotations.Next
 import io.redgreen.kstate.annotations.On
+import io.redgreen.kstate.annotations.StateMachine
+
+@StateMachine
+@Initial(FetchingGitHubRepos::class, FetchGitHubRepos::class)
+object GitHubReposStateMachine
 
 sealed class GitHubReposState : State {
-  @Initial
-  @On(Fetch::class, goto = FetchingGitHubRepos::class)
-  object Idle : GitHubReposState()
-
-  @On(Resolve::class, goto = Success::class)
-  @On(Reject::class, goto = Failure::class)
+  @On(Resolve::class, Next(Success::class))
+  @On(Reject::class, Next(Failure::class))
   object FetchingGitHubRepos : GitHubReposState()
 
   @Final
@@ -23,6 +26,6 @@ sealed class GitHubReposState : State {
     val repos: List<GitHubRepo>
   ) : GitHubReposState()
 
-  @On(Retry::class, goto = FetchingGitHubRepos::class)
+  @On(Retry::class, next = Next(FetchingGitHubRepos::class, FetchGitHubRepos::class))
   object Failure : GitHubReposState()
 }
