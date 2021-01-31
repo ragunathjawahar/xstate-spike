@@ -1,9 +1,9 @@
 package github
 
 import github.GitHubReposEffect.FetchGitHubRepos
-import io.redgreen.kstate.Event
-import io.redgreen.kstate.annotations.EffectEvent
-import io.redgreen.kstate.annotations.UiEvent
+import io.redgreen.kstate.annotation.EffectEvent
+import io.redgreen.kstate.annotation.UiEvent
+import io.redgreen.kstate.contract.Event
 
 sealed class GitHubReposEvent : Event {
   @EffectEvent(FetchGitHubRepos::class)

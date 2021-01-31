@@ -5,12 +5,12 @@ import github.GitHubReposEvent.Reject
 import github.GitHubReposEvent.Resolve
 import github.GitHubReposEvent.Retry
 import github.GitHubReposState.FetchingGitHubRepos
-import io.redgreen.kstate.State
-import io.redgreen.kstate.annotations.Final
-import io.redgreen.kstate.annotations.Initial
-import io.redgreen.kstate.annotations.Next
-import io.redgreen.kstate.annotations.On
-import io.redgreen.kstate.annotations.StateMachine
+import io.redgreen.kstate.annotation.Final
+import io.redgreen.kstate.annotation.Initial
+import io.redgreen.kstate.annotation.Next
+import io.redgreen.kstate.annotation.On
+import io.redgreen.kstate.annotation.StateMachine
+import io.redgreen.kstate.contract.State
 
 @StateMachine
 @Initial(FetchingGitHubRepos::class, FetchGitHubRepos::class)

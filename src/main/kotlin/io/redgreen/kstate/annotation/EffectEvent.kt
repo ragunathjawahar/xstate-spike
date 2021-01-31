@@ -1,6 +1,6 @@
-package io.redgreen.kstate.annotations
+package io.redgreen.kstate.annotation
 
-import io.redgreen.kstate.Effect
+import io.redgreen.kstate.contract.Effect
 import kotlin.reflect.KClass
 
 annotation class EffectEvent(

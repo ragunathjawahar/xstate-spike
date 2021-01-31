@@ -1,6 +1,6 @@
-package io.redgreen.kstate.annotations
+package io.redgreen.kstate.annotation
 
-import io.redgreen.kstate.Event
+import io.redgreen.kstate.contract.Event
 import kotlin.annotation.AnnotationRetention.SOURCE
 import kotlin.reflect.KClass
 
