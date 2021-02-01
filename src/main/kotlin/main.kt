@@ -1,3 +1,4 @@
+import counter.CounterStateMachine
 import github.GitHubReposEffect.FetchGitHubRepos.Failure
 import github.GitHubReposStateMachine
 import trafficlights.TrafficLightsStateMachine
@@ -7,5 +8,8 @@ fun main() {
   println(Failure.NoReposFound::class.java)
   println(Failure.SessionExpired::class.java)
   println(Failure.BadGateway::class.java)
+
   println(TrafficLightsStateMachine::class.java)
+
+  println(CounterStateMachine::class.java)
 }
