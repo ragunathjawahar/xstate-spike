@@ -1,4 +1,4 @@
-package xstate
+package xstate.example.trafficlights
 
 import trafficlights.TrafficLightsEffect
 import trafficlights.TrafficLightsEffect.BeginCountDown
@@ -8,6 +8,7 @@ import trafficlights.TrafficLightsState
 import trafficlights.TrafficLightsState.Green
 import trafficlights.TrafficLightsState.Red
 import trafficlights.TrafficLightsState.Yellow
+import xstate.Machine
 import xstate.visitors.MobiusVisitor
 
 fun main() {
