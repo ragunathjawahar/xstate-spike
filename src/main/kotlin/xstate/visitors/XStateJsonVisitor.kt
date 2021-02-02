@@ -9,7 +9,7 @@ class XStateJsonVisitor : DslVisitor {
   private var currentStateJsonObject: JSONObject? = null
 
   val json: String
-    get() = machineJsonObject.toString(2)
+    get() = machineJsonObject.toString(2) + "\n\n~ NOTE: Link to the viz tool: https://xstate.js.org/viz/ ~"
 
   override fun onName(name: String) {
     machineJsonObject.put("id", name)
@@ -37,9 +37,14 @@ class XStateJsonVisitor : DslVisitor {
     next: KClass<out Any>,
     effects: Set<KClass<out Any>>
   ) {
-    val onJsonObject = JSONObject().apply {
-      put(event.simpleName, next.simpleName)
+    val containsOn = currentStateJsonObject!!.has("on")
+    if (!containsOn) {
+      val onJsonObject = JSONObject().apply {
+        put(event.simpleName, next.simpleName)
+      }
+      currentStateJsonObject!!.put("on", onJsonObject)
+    } else {
+      (currentStateJsonObject!!.get("on") as JSONObject).put(event.simpleName, next.simpleName)
     }
-    currentStateJsonObject!!.put("on", onJsonObject)
   }
 }
