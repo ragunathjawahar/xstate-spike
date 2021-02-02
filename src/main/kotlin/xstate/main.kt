@@ -1,6 +1,7 @@
 package xstate
 
 import trafficlights.TrafficLightsEffect
+import trafficlights.TrafficLightsEffect.BeginCountDown
 import trafficlights.TrafficLightsEvent
 import trafficlights.TrafficLightsEvent.CountDownElapsed
 import trafficlights.TrafficLightsState
@@ -15,18 +16,18 @@ fun main() {
   Machine<TrafficLightsState, TrafficLightsEvent, TrafficLightsEffect>(visitor, "Traffic Lights", Green::class) {
     states {
       state(Green::class) {
-        on(CountDownElapsed::class, next = Yellow::class)
+        on(CountDownElapsed::class, next = Yellow::class, effects = setOf(BeginCountDown::class))
       }
       state(Yellow::class) {
-        on(CountDownElapsed::class, next = Red::class)
+        on(CountDownElapsed::class, next = Red::class, effects = setOf(BeginCountDown::class))
       }
       state(Red::class) {
-        on(CountDownElapsed::class, next = Green::class)
+        on(CountDownElapsed::class, next = Green::class, effects = setOf(BeginCountDown::class))
       }
     }
   }()
 
-  println("Initial state:" + visitor.initialState)
+  println("Initial state: " + visitor.initialState)
   println("Green + CountDownElapsed = " + visitor.updateFunction.invoke(Green, CountDownElapsed))
   println("Yellow + CountDownElapsed = " + visitor.updateFunction.invoke(Yellow, CountDownElapsed))
   println("Red + CountDownElapsed = " + visitor.updateFunction.invoke(Red, CountDownElapsed))

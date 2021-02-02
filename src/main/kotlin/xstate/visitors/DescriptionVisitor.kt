@@ -33,7 +33,8 @@ class DescriptionVisitor : DslVisitor {
 
   override fun onTransition(
     event: KClass<out Any>,
-    next: KClass<out Any>
+    next: KClass<out Any>,
+    effects: Set<KClass<out Any>>
   ) {
     summaryBuilder
       .append("    on: ")

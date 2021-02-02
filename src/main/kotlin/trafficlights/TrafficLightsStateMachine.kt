@@ -48,5 +48,7 @@ sealed class TrafficLightsEvent : Event {
 }
 
 sealed class TrafficLightsEffect : Effect {
-  object BeginCountDown : TrafficLightsEffect()
+  object BeginCountDown : TrafficLightsEffect() {
+    override fun toString(): String = this::class.java.simpleName
+  }
 }

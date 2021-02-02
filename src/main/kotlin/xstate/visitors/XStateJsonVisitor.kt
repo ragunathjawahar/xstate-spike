@@ -32,7 +32,11 @@ class XStateJsonVisitor : DslVisitor {
     }
   }
 
-  override fun onTransition(event: KClass<out Any>, next: KClass<out Any>) {
+  override fun onTransition(
+    event: KClass<out Any>,
+    next: KClass<out Any>,
+    effects: Set<KClass<out Any>>
+  ) {
     val onJsonObject = JSONObject().apply {
       put(event.simpleName, next.simpleName)
     }
