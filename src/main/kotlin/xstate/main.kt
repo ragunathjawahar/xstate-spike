@@ -7,10 +7,10 @@ import trafficlights.TrafficLightsState
 import trafficlights.TrafficLightsState.Green
 import trafficlights.TrafficLightsState.Red
 import trafficlights.TrafficLightsState.Yellow
-import xstate.hooks.DescriptionHook
+import xstate.hooks.XStateJsonHook
 
 fun main() {
-  val hook = DescriptionHook()
+  val hook = XStateJsonHook()
 
   Machine<TrafficLightsState, TrafficLightsEvent, TrafficLightsEffect>("Traffic Lights", Green::class, hook) {
     states {
@@ -26,5 +26,5 @@ fun main() {
     }
   }()
 
-  println(hook.description)
+  println(hook.json)
 }
