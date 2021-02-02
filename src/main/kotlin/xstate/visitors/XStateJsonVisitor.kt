@@ -1,10 +1,10 @@
-package xstate.hooks
+package xstate.visitors
 
 import kotlin.reflect.KClass
 import org.json.JSONObject
-import xstate.Hook
+import xstate.DslVisitor
 
-class XStateJsonHook : Hook {
+class XStateJsonVisitor : DslVisitor {
   private val machineJsonObject = JSONObject()
   private var currentStateJsonObject: JSONObject? = null
 

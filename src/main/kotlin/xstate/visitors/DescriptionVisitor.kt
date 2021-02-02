@@ -1,9 +1,9 @@
-package xstate.hooks
+package xstate.visitors
 
 import kotlin.reflect.KClass
-import xstate.Hook
+import xstate.DslVisitor
 
-class DescriptionHook : Hook {
+class DescriptionVisitor : DslVisitor {
   private val summaryBuilder = StringBuilder()
 
   val description: String

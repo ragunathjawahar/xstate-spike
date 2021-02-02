@@ -2,7 +2,7 @@ package xstate
 
 import kotlin.reflect.KClass
 
-interface Hook {
+interface DslVisitor {
   fun onName(name: String)
   fun onInitialState(initialState: KClass<out Any>)
   fun onState(state: KClass<out Any>)
