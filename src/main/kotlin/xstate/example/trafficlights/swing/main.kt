@@ -10,7 +10,8 @@ import trafficlights.TrafficLightsState.Green
 import trafficlights.TrafficLightsState.Red
 import trafficlights.TrafficLightsState.Yellow
 import xstate.example.trafficlights.TrafficLightsView
-import xstate.example.trafficlights.getTrafficLightsVisitor
+import xstate.example.trafficlights.runTrafficLightsVisitor
+import xstate.visitors.MobiusVisitor
 import xstate.visitors.MobiusVisitor.ReductionResult.StateEffect
 
 class TrafficLightsPanel : JPanel(), TrafficLightsView {
@@ -55,7 +56,7 @@ class TrafficLightsPanel : JPanel(), TrafficLightsView {
   /// -- Framework Code -- ///
 
   fun start() {
-    val trafficLightsVisitor = getTrafficLightsVisitor()
+    val trafficLightsVisitor = runTrafficLightsVisitor(MobiusVisitor()) as MobiusVisitor
     currentState = trafficLightsVisitor.initialState as TrafficLightsState
     render(currentState)
     val delay: Long = 1500

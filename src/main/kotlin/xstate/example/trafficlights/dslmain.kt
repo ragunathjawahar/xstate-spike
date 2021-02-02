@@ -8,12 +8,12 @@ import trafficlights.TrafficLightsState
 import trafficlights.TrafficLightsState.Green
 import trafficlights.TrafficLightsState.Red
 import trafficlights.TrafficLightsState.Yellow
+import xstate.DslVisitor
 import xstate.Machine
-import xstate.visitors.MobiusVisitor
 
-fun getTrafficLightsVisitor(): MobiusVisitor {
-  val visitor = MobiusVisitor()
-
+fun runTrafficLightsVisitor(
+  visitor: DslVisitor
+): DslVisitor {
   Machine
     .create<TrafficLightsState, TrafficLightsEvent, TrafficLightsEffect>(visitor, "Traffic Lights", Green::class) {
       states {
