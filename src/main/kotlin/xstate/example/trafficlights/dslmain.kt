@@ -14,19 +14,20 @@ import xstate.visitors.MobiusVisitor
 fun getTrafficLightsVisitor(): MobiusVisitor {
   val visitor = MobiusVisitor()
 
-  Machine<TrafficLightsState, TrafficLightsEvent, TrafficLightsEffect>(visitor, "Traffic Lights", Green::class) {
-    states {
-      state(Green::class) {
-        on(CountDownElapsed::class, next = Yellow::class, effects = setOf(BeginCountDown::class))
-      }
-      state(Yellow::class) {
-        on(CountDownElapsed::class, next = Red::class, effects = setOf(BeginCountDown::class))
-      }
-      state(Red::class) {
-        on(CountDownElapsed::class, next = Green::class, effects = setOf(BeginCountDown::class))
+  Machine
+    .create<TrafficLightsState, TrafficLightsEvent, TrafficLightsEffect>(visitor, "Traffic Lights", Green::class) {
+      states {
+        state(Green::class) {
+          on(CountDownElapsed::class, next = Yellow::class, effects = setOf(BeginCountDown::class))
+        }
+        state(Yellow::class) {
+          on(CountDownElapsed::class, next = Red::class, effects = setOf(BeginCountDown::class))
+        }
+        state(Red::class) {
+          on(CountDownElapsed::class, next = Green::class, effects = setOf(BeginCountDown::class))
+        }
       }
     }
-  }()
 
   return visitor
 }
