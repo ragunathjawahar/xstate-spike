@@ -2,7 +2,7 @@ package xstate.visitors
 
 import kotlin.reflect.KClass
 import xstate.DslVisitor
-import xstate.visitors.MobiusVisitor.ReductionResult.StateEffects
+import xstate.visitors.MobiusVisitor.ReductionResult.StateEffect
 
 typealias State = Any
 typealias Effects = Set<KClass<out Any>>
@@ -21,7 +21,7 @@ class MobiusVisitor : DslVisitor {
       val (stateClass, effectClassesSet) = transitions[transitionKey]!!
       val nextState = (stateClass as KClass<out Any>).objectInstance!!
       val effects = effectClassesSet.map { it.objectInstance!! }.toSet()
-      StateEffects(nextState, effects)
+      StateEffect(nextState, effects.first())
     } else {
       println("Missing transition ${currentState::class.simpleName} + ${event::class.simpleName}")
       currentState
@@ -54,13 +54,13 @@ class MobiusVisitor : DslVisitor {
   )
 
   sealed class ReductionResult {
-    data class StateEffects(
+    data class StateEffect(
       val state: Any,
-      val effects: Set<Any>
+      val effect: Any
     ) : ReductionResult()
 
     // TODO
-    // 1. StateEffect
+    // 1. StateEffects
     // 2. Effect
     // 3. Effects
   }
