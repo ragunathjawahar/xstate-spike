@@ -11,7 +11,7 @@ import trafficlights.TrafficLightsState.Yellow
 import xstate.Machine
 import xstate.visitors.MobiusVisitor
 
-fun main() {
+fun getTrafficLightsVisitor(): MobiusVisitor {
   val visitor = MobiusVisitor()
 
   Machine<TrafficLightsState, TrafficLightsEvent, TrafficLightsEffect>(visitor, "Traffic Lights", Green::class) {
@@ -28,8 +28,5 @@ fun main() {
     }
   }()
 
-  println("Initial state: " + visitor.initialState)
-  println("Green + CountDownElapsed = " + visitor.updateFunction.invoke(Green, CountDownElapsed))
-  println("Yellow + CountDownElapsed = " + visitor.updateFunction.invoke(Yellow, CountDownElapsed))
-  println("Red + CountDownElapsed = " + visitor.updateFunction.invoke(Red, CountDownElapsed))
+  return visitor
 }

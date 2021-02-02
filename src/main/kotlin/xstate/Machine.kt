@@ -5,7 +5,7 @@ import kotlin.reflect.KClass
 class Machine<S : Any, E : Any, F : Any>(
   private val dslVisitor: DslVisitor,
   private val name: String,
-  private val initialState: KClass<out S>,
+  private val initialState: KClass<out S>, // TODO Move this into the DSL
   private val definition: Machine<S, E, F>.() -> Unit,
 ) {
   fun states(
@@ -34,7 +34,7 @@ class States<S : Any, E : Any, F : Any>(
   }
 }
 
-class State<S : Any, E : Any, F: Any>(
+class State<S : Any, E : Any, F : Any>(
   private val dslVisitor: DslVisitor
 ) {
   fun on(
