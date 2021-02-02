@@ -41,6 +41,7 @@ class DescriptionVisitor : DslVisitor {
       .append(event.simpleName)
       .append(" -> ")
       .append(next.simpleName)
+      .append(", effects: [${effects.map { it.simpleName }.joinToString()}]")
       .append("\n")
   }
 }
