@@ -7,10 +7,10 @@ import trafficlights.TrafficLightsState
 import trafficlights.TrafficLightsState.Green
 import trafficlights.TrafficLightsState.Red
 import trafficlights.TrafficLightsState.Yellow
-import xstate.visitors.XStateJsonVisitor
+import xstate.visitors.MobiusVisitor
 
 fun main() {
-  val visitor = XStateJsonVisitor()
+  val visitor = MobiusVisitor()
 
   Machine<TrafficLightsState, TrafficLightsEvent, TrafficLightsEffect>(visitor, "Traffic Lights", Green::class) {
     states {
@@ -26,5 +26,8 @@ fun main() {
     }
   }()
 
-  println(visitor.json)
+  println("Initial state:" + visitor.initialState)
+  println("Green + CountDownElapsed = " + visitor.updateFunction.invoke(Green, CountDownElapsed))
+  println("Yellow + CountDownElapsed = " + visitor.updateFunction.invoke(Yellow, CountDownElapsed))
+  println("Red + CountDownElapsed = " + visitor.updateFunction.invoke(Red, CountDownElapsed))
 }

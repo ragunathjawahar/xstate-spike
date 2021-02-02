@@ -21,19 +21,25 @@ sealed class TrafficLightsState : State {
     CountDownElapsed::class,
     Next(Green::class, effects = [BeginCountDown::class])
   )
-  object Red : TrafficLightsState()
+  object Red : TrafficLightsState() {
+    override fun toString(): String = this::class.java.simpleName
+  }
 
   @On(
     CountDownElapsed::class,
     Next(Red::class, effects = [BeginCountDown::class])
   )
-  object Yellow : TrafficLightsState()
+  object Yellow : TrafficLightsState() {
+    override fun toString(): String = this::class.java.simpleName
+  }
 
   @On(
     CountDownElapsed::class,
     Next(Yellow::class, effects = [BeginCountDown::class])
   )
-  object Green : TrafficLightsState()
+  object Green : TrafficLightsState() {
+    override fun toString(): String = this::class.java.simpleName
+  }
 }
 
 sealed class TrafficLightsEvent : Event {
