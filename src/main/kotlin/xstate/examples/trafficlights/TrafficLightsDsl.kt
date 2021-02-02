@@ -1,4 +1,4 @@
-package xstate.example.trafficlights
+package xstate.examples.trafficlights
 
 import trafficlights.TrafficLightsEffect
 import trafficlights.TrafficLightsEffect.BeginCountDown

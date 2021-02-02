@@ -1,4 +1,4 @@
-package xstate.example.trafficlights.swing
+package xstate.examples.trafficlights
 
 import java.awt.Color
 import javax.swing.BoxLayout
@@ -9,10 +9,23 @@ import trafficlights.TrafficLightsState
 import trafficlights.TrafficLightsState.Green
 import trafficlights.TrafficLightsState.Red
 import trafficlights.TrafficLightsState.Yellow
-import xstate.example.trafficlights.TrafficLightsView
-import xstate.example.trafficlights.runTrafficLightsVisitor
 import xstate.visitors.MobiusVisitor
 import xstate.visitors.MobiusVisitor.ReductionResult.StateEffect
+
+fun main() {
+  val trafficLightsPanel = TrafficLightsPanel()
+  JFrame().apply {
+    title = "Traffic Lights"
+    pack()
+    setSize(200, 600)
+    defaultCloseOperation = JFrame.EXIT_ON_CLOSE
+    setLocationRelativeTo(null)
+    contentPane = trafficLightsPanel
+    isVisible = true
+  }
+
+  trafficLightsPanel.start()
+}
 
 class TrafficLightsPanel : JPanel(), TrafficLightsView {
   private val redPanel = JPanel()
@@ -71,19 +84,4 @@ class TrafficLightsPanel : JPanel(), TrafficLightsView {
   }
 
   private lateinit var currentState: TrafficLightsState
-}
-
-fun main() {
-  val trafficLightsPanel = TrafficLightsPanel()
-  JFrame().apply {
-    title = "Traffic Lights"
-    pack()
-    setSize(200, 600)
-    defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-    setLocationRelativeTo(null)
-    contentPane = trafficLightsPanel
-    isVisible = true
-  }
-
-  trafficLightsPanel.start()
 }

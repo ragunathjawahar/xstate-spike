@@ -1,4 +1,4 @@
-package xstate.example.trafficlights
+package xstate.examples.trafficlights
 
 interface TrafficLightsView {
   fun showRed()
