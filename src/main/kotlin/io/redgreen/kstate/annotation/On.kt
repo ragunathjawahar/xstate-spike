@@ -1,8 +1,8 @@
 package io.redgreen.kstate.annotation
 
 import io.redgreen.kstate.contract.Event
-import io.redgreen.kstate.contract.UseGeneratedReducer
 import io.redgreen.kstate.contract.Reducer
+import io.redgreen.kstate.contract.UseGeneratedReducer
 import kotlin.annotation.AnnotationRetention.SOURCE
 import kotlin.reflect.KClass
 
