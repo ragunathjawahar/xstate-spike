@@ -4,6 +4,8 @@ import java.awt.Color
 import javax.swing.BoxLayout
 import javax.swing.JFrame
 import javax.swing.JPanel
+import trafficlights.TrafficLightsEffect.BeginCountDown
+import trafficlights.TrafficLightsEffect.BeginCountDown.Companion.DEFAULT_DURATION
 import trafficlights.TrafficLightsEvent.CountDownElapsed
 import trafficlights.TrafficLightsState
 import trafficlights.TrafficLightsState.Green
@@ -72,14 +74,14 @@ class TrafficLightsPanel : JPanel(), TrafficLightsView {
     val trafficLightsVisitor = runTrafficLightsVisitor(MobiusVisitor()) as MobiusVisitor
     currentState = trafficLightsVisitor.initialState as TrafficLightsState
     render(currentState)
-    val delay: Long = 1500
+    val delay = DEFAULT_DURATION
     Thread.sleep(delay)
 
     while (true) {
-      val (state, _) = trafficLightsVisitor.updateFunction.invoke(currentState, CountDownElapsed) as StateEffect
+      val (state, effect) = trafficLightsVisitor.updateFunction.invoke(currentState, CountDownElapsed) as StateEffect
+      Thread.sleep((effect as BeginCountDown).duration)
       currentState = state as TrafficLightsState
       render(currentState)
-      Thread.sleep(delay)
     }
   }
 
