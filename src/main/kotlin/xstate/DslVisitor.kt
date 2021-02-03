@@ -1,6 +1,7 @@
 package xstate
 
 import kotlin.reflect.KClass
+import xstate.visitors.mobius.Reducer
 
 interface DslVisitor {
   fun onName(name: String)
@@ -12,6 +13,7 @@ interface DslVisitor {
   fun onTransition(
     event: KClass<out Any>,
     next: KClass<out Any>,
-    effects: Set<KClass<out Any>>
+    effects: Set<KClass<out Any>>,
+    reducer: KClass<out Reducer<out Any, out Any>>
   )
 }

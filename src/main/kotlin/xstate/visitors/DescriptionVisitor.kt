@@ -2,6 +2,7 @@ package xstate.visitors
 
 import kotlin.reflect.KClass
 import xstate.DslVisitor
+import xstate.visitors.mobius.Reducer
 
 class DescriptionVisitor : DslVisitor {
   private val summaryBuilder = StringBuilder()
@@ -34,7 +35,8 @@ class DescriptionVisitor : DslVisitor {
   override fun onTransition(
     event: KClass<out Any>,
     next: KClass<out Any>,
-    effects: Set<KClass<out Any>>
+    effects: Set<KClass<out Any>>,
+    reducer: KClass<out Reducer<out Any, out Any>>
   ) {
     summaryBuilder
       .append("    on: ")

@@ -3,6 +3,7 @@ package xstate.visitors
 import kotlin.reflect.KClass
 import org.json.JSONObject
 import xstate.DslVisitor
+import xstate.visitors.mobius.Reducer
 
 class XStateJsonVisitor : DslVisitor {
   private val machineJsonObject = JSONObject()
@@ -35,7 +36,8 @@ class XStateJsonVisitor : DslVisitor {
   override fun onTransition(
     event: KClass<out Any>,
     next: KClass<out Any>,
-    effects: Set<KClass<out Any>>
+    effects: Set<KClass<out Any>>,
+    reducer: KClass<out Reducer<out Any, out Any>>
   ) {
     val containsOn = currentStateJsonObject!!.has("on")
     if (!containsOn) {

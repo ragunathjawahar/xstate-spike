@@ -1,11 +1,6 @@
 package xstate.visitors.mobius
 
-sealed class ReductionResult {
-  companion object {
-    val NoOpReducer: (currentState: Any, event: Any) -> ReductionResult =
-      { _, _ -> TODO() }
-  }
-
+sealed class ReductionResult { // TODO: 03/02/21 Add parameterized type
   data class StateEffect(
     val state: Any,
     val effect: Any

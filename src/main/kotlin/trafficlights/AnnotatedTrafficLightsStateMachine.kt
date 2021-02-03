@@ -48,7 +48,12 @@ sealed class TrafficLightsEvent : Event {
 }
 
 sealed class TrafficLightsEffect : Effect {
-  object BeginCountDown : TrafficLightsEffect() {
-    override fun toString(): String = this::class.java.simpleName
+  data class BeginCountDown(
+    val duration: Long = DEFAULT_DURATION
+  ) : TrafficLightsEffect() {
+    companion object {
+      const val DEFAULT_DURATION = 1500L
+      const val YELLOW_TO_RED_DURATION = DEFAULT_DURATION / 3
+    }
   }
 }

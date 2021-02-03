@@ -2,29 +2,27 @@ package xstate.visitors.mobius
 
 import kotlin.reflect.KClass
 import xstate.DslVisitor
-import xstate.visitors.mobius.ReductionResult.StateEffect
+import xstate.visitors.mobius.Reducer.Companion.NoOpReducer
 
 typealias State = Any
-typealias Effects = Set<KClass<out Any>>
+typealias Effect = KClass<out Any>
 
 class MobiusVisitor : DslVisitor {
   private lateinit var initialStateClass: KClass<out Any>
   private lateinit var currentStateClass: KClass<out Any>
-  private val transitions = mutableMapOf<Transition, Pair<State, Effects>>()
+  private val transitions = mutableMapOf<Transition, TransitionStrategy>()
 
   val initialState: Any
     get() = initialStateClass.objectInstance!!
 
   val updateFunction: (currentState: Any, event: Any) -> Any = { currentState, event ->
     val transitionKey = Transition(currentState::class, event::class)
-    if (transitions.containsKey(transitionKey)) {
-      val (stateClass, effectClassesSet) = transitions[transitionKey]!!
-      val nextState = (stateClass as KClass<out Any>).objectInstance!!
-      val effects = effectClassesSet.map { it.objectInstance!! }.toSet()
-      StateEffect(nextState, effects.first())
-    } else {
+    if (!transitions.containsKey(transitionKey)) {
       println("Missing transition ${currentState::class.simpleName} + ${event::class.simpleName}")
       currentState
+    } else {
+      val strategy = transitions[transitionKey]!!
+      strategy.invoke(currentState, event)
     }
   }
 
@@ -43,9 +41,14 @@ class MobiusVisitor : DslVisitor {
   override fun onTransition(
     event: KClass<out Any>,
     next: KClass<out Any>,
-    effects: Set<KClass<out Any>>
+    effects: Set<KClass<out Any>>,
+    reducer: KClass<out Reducer<out Any, out Any>>
   ) {
-    transitions[Transition(currentStateClass, event)] = Pair(next, effects)
+    if (reducer == NoOpReducer::class) {
+      transitions[Transition(currentStateClass, event)] = ObjectStateObjectEffectTransitionStrategy(next, effects.first())
+    } else {
+      transitions[Transition(currentStateClass, event)] = ReducerStrategy(reducer)
+    }
   }
 
   data class Transition(

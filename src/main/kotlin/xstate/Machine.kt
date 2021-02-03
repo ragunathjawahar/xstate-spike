@@ -1,8 +1,8 @@
 package xstate
 
 import kotlin.reflect.KClass
-import xstate.visitors.mobius.ReductionResult
-import xstate.visitors.mobius.ReductionResult.Companion.NoOpReducer
+import xstate.visitors.mobius.Reducer
+import xstate.visitors.mobius.Reducer.Companion.NoOpReducer
 
 class Machine<S : Any, E : Any, F : Any> private constructor(
   private val dslVisitor: DslVisitor,
@@ -47,10 +47,10 @@ class State<S : Any, E : Any, F : Any>(
 ) {
   fun on(
     event: KClass<out E>,
-    next: KClass<out S>,
+    next: KClass<out S> = Any::class as KClass<out S>,
     effects: Set<KClass<out F>> = emptySet(),
-    reducer: (S, E) -> ReductionResult = NoOpReducer
+    reducer: KClass<out Reducer<out S, out E>> = NoOpReducer::class
   ) {
-    dslVisitor.onTransition(event, next, effects)
+    dslVisitor.onTransition(event, next, effects, reducer)
   }
 }
