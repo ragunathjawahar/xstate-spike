@@ -9,8 +9,8 @@ import trafficlights.TrafficLightsState
 import trafficlights.TrafficLightsState.Green
 import trafficlights.TrafficLightsState.Red
 import trafficlights.TrafficLightsState.Yellow
-import xstate.visitors.MobiusVisitor
-import xstate.visitors.MobiusVisitor.ReductionResult.StateEffect
+import xstate.visitors.mobius.MobiusVisitor
+import xstate.visitors.mobius.ReductionResult.StateEffect
 
 fun main() {
   val trafficLightsPanel = TrafficLightsPanel()

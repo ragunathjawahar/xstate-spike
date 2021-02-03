@@ -1,8 +1,8 @@
-package xstate.visitors
+package xstate.visitors.mobius
 
 import kotlin.reflect.KClass
 import xstate.DslVisitor
-import xstate.visitors.MobiusVisitor.ReductionResult.StateEffect
+import xstate.visitors.mobius.ReductionResult.StateEffect
 
 typealias State = Any
 typealias Effects = Set<KClass<out Any>>
@@ -52,18 +52,6 @@ class MobiusVisitor : DslVisitor {
     val currentStateClass: KClass<out Any>,
     val eventClass: KClass<out Any>
   )
-
-  sealed class ReductionResult {
-    data class StateEffect(
-      val state: Any,
-      val effect: Any
-    ) : ReductionResult()
-
-    // TODO
-    // 1. StateEffects
-    // 2. Effect
-    // 3. Effects
-  }
 
   // Transition strategies
   // 1. Return Kotlin object
