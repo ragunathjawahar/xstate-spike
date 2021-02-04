@@ -1,0 +1,11 @@
+{
+  "initial": "Green",
+  "id": "Traffic Lights",
+  "states": {
+    "Red": {"on": {"CountDownElapsed": "Green"}},
+    "Yellow": {"on": {"CountDownElapsed": "Red"}},
+    "Green": {"on": {"CountDownElapsed": "Yellow"}}
+  }
+}
+
+~ NOTE: Link to the viz tool: https://xstate.js.org/viz/ ~

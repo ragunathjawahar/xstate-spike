@@ -1,0 +1,10 @@
+=====================================
+States & transitions (Traffic Lights)
+=====================================
+Initial: Green
+=> Green
+    on: CountDownElapsed -> Yellow, effects: [BeginCountDown]
+=> Yellow
+    on: CountDownElapsed -> Red, effects: [BeginCountDown]
+=> Red
+    on: CountDownElapsed -> Green, effects: [BeginCountDown]
