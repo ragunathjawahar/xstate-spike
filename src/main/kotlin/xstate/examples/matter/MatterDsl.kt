@@ -16,21 +16,19 @@ fun main() {
 }
 
 val matterDsl = Machine.create<MatterState, MatterEvent, Nothing>("Matter") {
-  states {
-    initial(Solid::class)
+  initial(Solid::class)
 
-    state(Solid::class) {
-      on(Melt::class, next = Liquid::class)
-    }
+  state(Solid::class) {
+    on(Melt::class, next = Liquid::class)
+  }
 
-    state(Liquid::class) {
-      on(Vaporize::class, next = Gas::class)
-      on(Freeze::class, next = Solid::class)
-    }
+  state(Liquid::class) {
+    on(Vaporize::class, next = Gas::class)
+    on(Freeze::class, next = Solid::class)
+  }
 
-    state(Gas::class) {
-      on(Condense::class, next = Liquid::class)
-    }
+  state(Gas::class) {
+    on(Condense::class, next = Liquid::class)
   }
 }
 

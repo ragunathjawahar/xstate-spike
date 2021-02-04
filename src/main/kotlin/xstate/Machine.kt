@@ -19,11 +19,20 @@ class Machine<S : Any, E : Any, F : Any> private constructor(
 
   private val visitorWrapper = DslVisitorWrapper()
 
-  fun states(
-    builder: States<S, E, F>.() -> Unit
+
+  fun initial(
+    state: KClass<out S>
   ) {
     visitorWrapper.onName(name)
-    builder(States(visitorWrapper))
+    visitorWrapper.onInitialState(state)
+  }
+
+  fun state(
+    state: KClass<out S>,
+    definition: State<S, E, F>.() -> Unit
+  ) {
+    visitorWrapper.onState(state)
+    definition(State(visitorWrapper))
   }
 
   fun <V : DslVisitor> visit(visitor: V): V {
@@ -31,24 +40,6 @@ class Machine<S : Any, E : Any, F : Any> private constructor(
     definition()
     visitorWrapper.visitor = null
     return visitor
-  }
-}
-
-class States<S : Any, E : Any, F : Any>(
-  private val dslVisitor: DslVisitor
-) {
-  fun initial(
-    state: KClass<out S>
-  ) {
-    dslVisitor.onInitialState(state)
-  }
-
-  fun state(
-    state: KClass<out S>,
-    definition: State<S, E, F>.() -> Unit
-  ) {
-    dslVisitor.onState(state)
-    definition(State(dslVisitor))
   }
 }
 
