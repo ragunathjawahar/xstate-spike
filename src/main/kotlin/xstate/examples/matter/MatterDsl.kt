@@ -15,7 +15,7 @@ fun main() {
 }
 
 val visitor = XStateJsonVisitor().apply {
-  Machine.create<MatterState, MatterEvent, Nothing>(this, "Matter", Solid::class) {
+  Machine.create<MatterState, MatterEvent, Nothing>("Matter", Solid::class) {
     states {
       state(Solid::class) {
         on(Melt::class, next = Liquid::class)

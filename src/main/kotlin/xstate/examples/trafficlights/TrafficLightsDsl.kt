@@ -18,8 +18,8 @@ import xstate.visitors.mobius.ReductionResult.StateEffect
 fun runTrafficLightsVisitor(
   visitor: DslVisitor
 ): DslVisitor {
-  Machine
-    .create<TrafficLightsState, TrafficLightsEvent, TrafficLightsEffect>(visitor, "Traffic Lights", Green::class) {
+  val machine = Machine
+    .create<TrafficLightsState, TrafficLightsEvent, TrafficLightsEffect>("Traffic Lights", Green::class) {
       states {
         state(Green::class) {
           on(CountDownElapsed::class, next = Yellow::class, effects = setOf(BeginCountDown::class))
@@ -39,6 +39,8 @@ fun runTrafficLightsVisitor(
         }
       }
     }
+
+  machine.visit(visitor)
 
   return visitor
 }
