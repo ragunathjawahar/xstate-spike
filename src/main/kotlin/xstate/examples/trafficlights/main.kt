@@ -72,14 +72,14 @@ class TrafficLightsPanel : JPanel(), TrafficLightsView {
   /// -- Framework Code -- ///
 
   fun start() {
-    val trafficLightsVisitor = runVisitor(trafficLightsStateMachine, MobiusVisitor())
-    currentState = trafficLightsVisitor.initialState as TrafficLightsState
+    val visitor = runVisitor(trafficLightsStateMachine, MobiusVisitor())
+    currentState = visitor.initialState as TrafficLightsState
     render(currentState)
     val delay = DEFAULT_DURATION
     Thread.sleep(delay)
 
     while (true) {
-      val (state, effect) = trafficLightsVisitor.updateFunction.invoke(currentState, CountDownElapsed) as StateEffect
+      val (state, effect) = visitor.updateFunction.invoke(currentState, CountDownElapsed) as StateEffect
       Thread.sleep((effect as BeginCountDown).duration)
       currentState = state as TrafficLightsState
       render(currentState)
