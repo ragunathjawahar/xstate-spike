@@ -2,6 +2,7 @@ package xstate.visitors.mobius
 
 import kotlin.reflect.KClass
 import kotlin.reflect.full.primaryConstructor
+import log.debug
 import xstate.visitors.mobius.ReductionResult.StateEffect
 
 interface TransitionStrategy {
@@ -38,8 +39,4 @@ class ReducerStrategy(
     val reducerInstance: Reducer<Any, Any> = reducer.primaryConstructor!!.call() as Reducer<Any, Any>
     return reducerInstance.reduce(currentState, event)
   }
-}
-
-fun debug(message: String) {
-  println(message)
 }
