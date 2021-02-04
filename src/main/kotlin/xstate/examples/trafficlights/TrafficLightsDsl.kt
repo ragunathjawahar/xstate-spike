@@ -10,9 +10,15 @@ import trafficlights.TrafficLightsState.Green
 import trafficlights.TrafficLightsState.Red
 import trafficlights.TrafficLightsState.Yellow
 import xstate.Machine
+import xstate.runVisitor
+import xstate.visitors.XStateJsonVisitor
 import xstate.visitors.mobius.Reducer
 import xstate.visitors.mobius.ReductionResult
 import xstate.visitors.mobius.ReductionResult.StateEffect
+
+fun main() {
+  println(runVisitor(trafficLightsStateMachine, XStateJsonVisitor()).json)
+}
 
 val trafficLightsStateMachine = Machine
   .create<TrafficLightsState, TrafficLightsEvent, TrafficLightsEffect>("Traffic Lights") {
