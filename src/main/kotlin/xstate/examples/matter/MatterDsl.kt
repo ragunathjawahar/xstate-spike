@@ -8,25 +8,24 @@ import xstate.examples.matter.MatterEvent.Vaporize
 import xstate.examples.matter.MatterState.Gas
 import xstate.examples.matter.MatterState.Liquid
 import xstate.examples.matter.MatterState.Solid
+import xstate.runVisitor
 import xstate.visitors.XStateJsonVisitor
 
 fun main() {
-  println(visitor.json)
+  println(runVisitor(matterDsl, XStateJsonVisitor()).json)
 }
 
-val visitor = XStateJsonVisitor().apply {
-  Machine.create<MatterState, MatterEvent, Nothing>("Matter", Solid::class) {
-    states {
-      state(Solid::class) {
-        on(Melt::class, next = Liquid::class)
-      }
-      state(Liquid::class) {
-        on(Vaporize::class, next = Gas::class)
-        on(Freeze::class, next = Solid::class)
-      }
-      state(Gas::class) {
-        on(Condense::class, next = Liquid::class)
-      }
+val matterDsl = Machine.create<MatterState, MatterEvent, Nothing>("Matter", Solid::class) {
+  states {
+    state(Solid::class) {
+      on(Melt::class, next = Liquid::class)
+    }
+    state(Liquid::class) {
+      on(Vaporize::class, next = Gas::class)
+      on(Freeze::class, next = Solid::class)
+    }
+    state(Gas::class) {
+      on(Condense::class, next = Liquid::class)
     }
   }
 }

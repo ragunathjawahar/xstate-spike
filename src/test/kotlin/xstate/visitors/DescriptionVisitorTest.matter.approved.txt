@@ -1,0 +1,11 @@
+=============================
+States & transitions (Matter)
+=============================
+Initial: Solid
+=> Solid
+    on: Melt -> Liquid, effects: []
+=> Liquid
+    on: Vaporize -> Gas, effects: []
+    on: Freeze -> Solid, effects: []
+=> Gas
+    on: Condense -> Liquid, effects: []

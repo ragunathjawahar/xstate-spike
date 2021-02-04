@@ -1,0 +1,14 @@
+{
+  "initial": "Solid",
+  "id": "Matter",
+  "states": {
+    "Liquid": {"on": {
+      "Vaporize": "Gas",
+      "Freeze": "Solid"
+    }},
+    "Gas": {"on": {"Condense": "Liquid"}},
+    "Solid": {"on": {"Melt": "Liquid"}}
+  }
+}
+
+~ NOTE: Link to the viz tool: https://xstate.js.org/viz/ ~
