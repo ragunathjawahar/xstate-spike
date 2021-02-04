@@ -15,21 +15,20 @@ import xstate.visitors.mobius.ReductionResult
 import xstate.visitors.mobius.ReductionResult.StateEffect
 
 val trafficLightsStateMachine = Machine
-  .create<TrafficLightsState, TrafficLightsEvent, TrafficLightsEffect>("Traffic Lights", Green::class) {
+  .create<TrafficLightsState, TrafficLightsEvent, TrafficLightsEffect>("Traffic Lights") {
     states {
+      initial(Green::class)
+
       state(Green::class) {
-        on(
-          CountDownElapsed::class,
-          next = Yellow::class,
-          effects = setOf(BeginCountDown::class),
-          reducer = GreenToYellowReducer::class
-        )
+        on(CountDownElapsed::class, next = Yellow::class, effects = setOf(BeginCountDown::class), reducer = GreenToYellowReducer::class)
       }
+
       state(Yellow::class) {
         // Despite having a reducer, we still have to specify the state class. We also have to figure out
         // how to keep the next state, effects, and the reducer in sync.
         on(CountDownElapsed::class, next = Red::class, effects = setOf(BeginCountDown::class))
       }
+
       state(Red::class) {
         on(CountDownElapsed::class, next = Green::class, effects = setOf(BeginCountDown::class))
       }

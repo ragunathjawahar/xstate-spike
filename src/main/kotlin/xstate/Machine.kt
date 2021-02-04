@@ -7,16 +7,14 @@ import xstate.visitors.mobius.Reducer.Companion.NoOpReducer
 
 class Machine<S : Any, E : Any, F : Any> private constructor(
   private val name: String,
-  private val initialState: KClass<out S>, // TODO Move this into the DSL
   private val definition: Machine<S, E, F>.() -> Unit
 ) {
   companion object {
     fun <S : Any, E : Any, F : Any> create(
       name: String,
-      initialState: KClass<out S>,
       definition: Machine<S, E, F>.() -> Unit
     ): Machine<S, E, F> =
-      Machine(name, initialState, definition)
+      Machine(name, definition)
   }
 
   private val visitorWrapper = DslVisitorWrapper()
@@ -25,7 +23,6 @@ class Machine<S : Any, E : Any, F : Any> private constructor(
     builder: States<S, E, F>.() -> Unit
   ) {
     visitorWrapper.onName(name)
-    visitorWrapper.onInitialState(initialState)
     builder(States(visitorWrapper))
   }
 
@@ -40,6 +37,12 @@ class Machine<S : Any, E : Any, F : Any> private constructor(
 class States<S : Any, E : Any, F : Any>(
   private val dslVisitor: DslVisitor
 ) {
+  fun initial(
+    state: KClass<out S>
+  ) {
+    dslVisitor.onInitialState(state)
+  }
+
   fun state(
     state: KClass<out S>,
     definition: State<S, E, F>.() -> Unit

@@ -15,15 +15,19 @@ fun main() {
   println(runVisitor(matterDsl, XStateJsonVisitor()).json)
 }
 
-val matterDsl = Machine.create<MatterState, MatterEvent, Nothing>("Matter", Solid::class) {
+val matterDsl = Machine.create<MatterState, MatterEvent, Nothing>("Matter") {
   states {
+    initial(Solid::class)
+
     state(Solid::class) {
       on(Melt::class, next = Liquid::class)
     }
+
     state(Liquid::class) {
       on(Vaporize::class, next = Gas::class)
       on(Freeze::class, next = Solid::class)
     }
+
     state(Gas::class) {
       on(Condense::class, next = Liquid::class)
     }
