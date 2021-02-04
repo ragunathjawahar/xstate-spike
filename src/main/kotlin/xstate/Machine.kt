@@ -47,7 +47,7 @@ class State<S : Any, E : Any, F : Any>(
 ) {
   fun on(
     event: KClass<out E>,
-    next: KClass<out S> = Any::class as KClass<out S>,
+    next: KClass<out S>,
     effects: Set<KClass<out F>> = emptySet(),
     reducer: KClass<out Reducer<out S, out E>> = NoOpReducer::class
   ) {

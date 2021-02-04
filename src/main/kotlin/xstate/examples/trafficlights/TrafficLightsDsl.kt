@@ -25,7 +25,14 @@ fun runTrafficLightsVisitor(
           on(CountDownElapsed::class, next = Yellow::class, effects = setOf(BeginCountDown::class))
         }
         state(Yellow::class) {
-          on(CountDownElapsed::class, reducer = YellowToRedReducer::class)
+          // Despite having a reducer, we still have to specify the state class. We also have to figure out
+          // how to keep the next state, effects, and the reducer in sync.
+          on(
+            CountDownElapsed::class,
+            next = Red::class,
+            effects = setOf(BeginCountDown::class),
+            reducer = YellowToRedReducer::class
+          )
         }
         state(Red::class) {
           on(CountDownElapsed::class, next = Green::class, effects = setOf(BeginCountDown::class))
