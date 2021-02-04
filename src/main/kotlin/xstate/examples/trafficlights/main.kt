@@ -1,16 +1,18 @@
 package xstate.examples.trafficlights
 
+import com.spotify.mobius.First
+import com.spotify.mobius.Next
+import com.spotify.mobius.Update
 import java.awt.Color
 import javax.swing.BoxLayout
 import javax.swing.JFrame
 import javax.swing.JPanel
+import trafficlights.TrafficLightsEffect
 import trafficlights.TrafficLightsEffect.BeginCountDown
-import trafficlights.TrafficLightsEffect.BeginCountDown.Companion.DEFAULT_DURATION
-import trafficlights.TrafficLightsEvent.CountDownElapsed
+import trafficlights.TrafficLightsEvent
 import trafficlights.TrafficLightsState
-import trafficlights.TrafficLightsState.Green
-import trafficlights.TrafficLightsState.Red
-import trafficlights.TrafficLightsState.Yellow
+import xstate.fastLazy
+import xstate.mobius.MobiusDelegate
 import xstate.runVisitor
 import xstate.visitors.mobius.MobiusVisitor
 import xstate.visitors.mobius.ReductionResult.StateEffect
@@ -44,6 +46,31 @@ class TrafficLightsPanel : JPanel(), TrafficLightsView {
     add(greenPanel)
   }
 
+  private val visitor by fastLazy { runVisitor(trafficLightsStateMachine, MobiusVisitor()) }
+
+  private val mobiusDelegate by fastLazy {
+    MobiusDelegate(
+      visitor.initialState as TrafficLightsState,
+      {
+        // TODO: 04/02/21 Add support for init
+        First.first(it, setOf(BeginCountDown()))
+      },
+      mobiusUpdateFunction(),
+      TrafficLightsEffectHandler.create(),
+      TrafficLightsViewRenderer(this)
+    )
+  }
+
+  private fun mobiusUpdateFunction() =
+    Update<TrafficLightsState, TrafficLightsEvent, TrafficLightsEffect> { currentState, event ->
+      val (nextState, effect) = visitor.updateFunction.invoke(currentState, event) as StateEffect
+      Next.next(nextState as TrafficLightsState, setOf(effect as TrafficLightsEffect))
+    }
+
+  override fun clear() {
+    lights.onEach { it.background = Color.LIGHT_GRAY }
+  }
+
   override fun showRed() {
     redPanel.background = Color.RED
   }
@@ -56,35 +83,9 @@ class TrafficLightsPanel : JPanel(), TrafficLightsView {
     greenPanel.background = Color.GREEN
   }
 
-  private fun clear() {
-    lights.onEach { it.background = Color.LIGHT_GRAY }
-  }
-
-  private fun render(state: TrafficLightsState) {
-    clear()
-    when (state) {
-      Red -> showRed()
-      Yellow -> showYellow()
-      Green -> showGreen()
-    }
-  }
-
   /// -- Framework Code -- ///
 
   fun start() {
-    val visitor = runVisitor(trafficLightsStateMachine, MobiusVisitor())
-    currentState = visitor.initialState as TrafficLightsState
-    render(currentState)
-    val delay = DEFAULT_DURATION
-    Thread.sleep(delay)
-
-    while (true) {
-      val (state, effect) = visitor.updateFunction.invoke(currentState, CountDownElapsed) as StateEffect
-      Thread.sleep((effect as BeginCountDown).duration)
-      currentState = state as TrafficLightsState
-      render(currentState)
-    }
+    mobiusDelegate.start()
   }
-
-  private lateinit var currentState: TrafficLightsState
 }

@@ -12,9 +12,11 @@ class MobiusVisitor : DslVisitor {
   private lateinit var currentStateClass: KClass<out Any>
   private val transitions = mutableMapOf<Transition, TransitionStrategy>()
 
+  // FIXME: 04/02/21 Use type inference to assign a type to the initial state
   val initialState: Any
     get() = initialStateClass.objectInstance!!
 
+  // FIXME: 04/02/21 Replace this with a function with type parameters
   val updateFunction: (currentState: Any, event: Any) -> Any = { currentState, event ->
     val transitionKey = Transition(currentState::class, event::class)
     if (!transitions.containsKey(transitionKey)) {
