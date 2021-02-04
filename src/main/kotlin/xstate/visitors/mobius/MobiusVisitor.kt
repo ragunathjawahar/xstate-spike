@@ -2,19 +2,28 @@ package xstate.visitors.mobius
 
 import kotlin.reflect.KClass
 import xstate.DslVisitor
+import xstate.fastLazy
 import xstate.visitors.mobius.Reducer.Companion.NoOpReducer
+import xstate.visitors.mobius.ReductionResult.StateEffect
 
 typealias State = Any
 typealias Effect = KClass<out Any>
 
 class MobiusVisitor : DslVisitor {
   private lateinit var initialStateClass: KClass<out Any>
+  private lateinit var initialEffectClasses: Set<KClass<out Any>>
   private lateinit var currentStateClass: KClass<out Any>
   private val transitions = mutableMapOf<Transition, TransitionStrategy>()
 
   // FIXME: 04/02/21 Use type inference to assign a type to the initial state
   val initialState: Any
     get() = initialStateClass.objectInstance!!
+
+  val initFunction: (currentState: Any) -> Any by fastLazy {
+    { currentState ->
+      StateEffect(currentState, createClassInstance(initialEffectClasses.first()))
+    }
+  }
 
   // FIXME: 04/02/21 Replace this with a function with type parameters
   val updateFunction: (currentState: Any, event: Any) -> Any = { currentState, event ->
@@ -32,8 +41,12 @@ class MobiusVisitor : DslVisitor {
     /* No-op, nothing to do really. */
   }
 
-  override fun onInitialState(initialState: KClass<out Any>) { // TODO: 02/02/21 Rename KClass parameters with Class suffix
+  override fun onInitialState(
+    initialState: KClass<out Any>,
+    effects: Set<KClass<out Any>>
+  ) { // TODO: 02/02/21 Rename KClass parameters with Class suffix
     initialStateClass = initialState
+    initialEffectClasses = effects
   }
 
   override fun onState(state: KClass<out Any>) {
@@ -47,7 +60,8 @@ class MobiusVisitor : DslVisitor {
     reducer: KClass<out Reducer<out Any, out Any>>
   ) {
     if (reducer == NoOpReducer::class) {
-      transitions[Transition(currentStateClass, event)] = ObjectStateObjectEffectTransitionStrategy(next, effects.first())
+      transitions[Transition(currentStateClass, event)] =
+        ObjectStateObjectEffectTransitionStrategy(next, effects.first())
     } else {
       transitions[Transition(currentStateClass, event)] = ReducerStrategy(reducer)
     }

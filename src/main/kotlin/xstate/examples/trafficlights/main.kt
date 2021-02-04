@@ -1,6 +1,7 @@
 package xstate.examples.trafficlights
 
 import com.spotify.mobius.First
+import com.spotify.mobius.Init
 import com.spotify.mobius.Next
 import com.spotify.mobius.Update
 import java.awt.Color
@@ -8,7 +9,6 @@ import javax.swing.BoxLayout
 import javax.swing.JFrame
 import javax.swing.JPanel
 import trafficlights.TrafficLightsEffect
-import trafficlights.TrafficLightsEffect.BeginCountDown
 import trafficlights.TrafficLightsEvent
 import trafficlights.TrafficLightsState
 import xstate.fastLazy
@@ -51,17 +51,19 @@ class TrafficLightsPanel : JPanel(), TrafficLightsView {
   private val mobiusDelegate by fastLazy {
     MobiusDelegate(
       visitor.initialState as TrafficLightsState,
-      {
-        // TODO: 04/02/21 Add support for init
-        First.first(it, setOf(BeginCountDown()))
-      },
-      mobiusUpdateFunction(),
+      mobiusInit(),
+      mobiusUpdate(),
       TrafficLightsEffectHandler.create(),
       TrafficLightsViewRenderer(this)
     )
   }
 
-  private fun mobiusUpdateFunction() =
+  private fun mobiusInit() = Init<TrafficLightsState, TrafficLightsEffect> { model ->
+    val (state, effect) = visitor.initFunction.invoke(model) as StateEffect
+    First.first(state as TrafficLightsState, setOf(effect as TrafficLightsEffect))
+  }
+
+  private fun mobiusUpdate() =
     Update<TrafficLightsState, TrafficLightsEvent, TrafficLightsEffect> { currentState, event ->
       val (nextState, effect) = visitor.updateFunction.invoke(currentState, event) as StateEffect
       Next.next(nextState as TrafficLightsState, setOf(effect as TrafficLightsEffect))

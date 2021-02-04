@@ -2,7 +2,6 @@ package xstate.visitors.mobius
 
 import kotlin.reflect.KClass
 import kotlin.reflect.full.primaryConstructor
-import log.debug
 import xstate.visitors.mobius.ReductionResult.StateEffect
 
 interface TransitionStrategy {
@@ -19,15 +18,7 @@ class ObjectStateObjectEffectTransitionStrategy(
      * We may have to use the current state to derive event objects by mapping the state's properties to the
      * effect's properties.
      */
-    val effect = if (effectClass.objectInstance != null) {
-      debug("${effectClass.simpleName} is a Kotlin object, acquiring instance.")
-      effectClass.objectInstance!!
-    } else {
-      debug("${effectClass.simpleName} is a class, attempting to construct a new object.")
-      // Default parameters are not visible from Kotlin reflect. Therefore, we use the Java reflection API to
-      // construct default instances.
-      effectClass.java.constructors.first { it.parameterCount == 0 }.newInstance()
-    }
+    val effect = createClassInstance(effectClass)
     return StateEffect(nextState, effect)
   }
 }

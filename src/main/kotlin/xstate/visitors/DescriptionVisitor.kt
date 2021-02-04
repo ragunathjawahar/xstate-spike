@@ -20,9 +20,13 @@ class DescriptionVisitor : DslVisitor {
       .append(separator).append("\n")
   }
 
-  override fun onInitialState(initialState: KClass<out Any>) {
+  override fun onInitialState(
+    initialState: KClass<out Any>,
+    effects: Set<KClass<out Any>>
+  ) {
     summaryBuilder
       .append("Initial: ${initialState.simpleName}")
+      .append(", effects: [${effects.map { it.simpleName }.joinToString()}]")
       .append("\n")
   }
 

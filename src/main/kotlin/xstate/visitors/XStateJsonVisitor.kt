@@ -13,10 +13,13 @@ class XStateJsonVisitor : DslVisitor {
     get() = machineJsonObject.toString(2) + "\n\n~ NOTE: Link to the viz tool: https://xstate.js.org/viz/ ~"
 
   override fun onName(name: String) {
-    machineJsonObject.put("id", name)
+    machineJsonObject.put("id", name) // TODO: 04/02/21 Extract constants and put them in one place
   }
 
-  override fun onInitialState(initialState: KClass<out Any>) {
+  override fun onInitialState(
+    initialState: KClass<out Any>,
+    effects: Set<KClass<out Any>>
+  ) {
     machineJsonObject.put("initial", initialState.simpleName)
   }
 

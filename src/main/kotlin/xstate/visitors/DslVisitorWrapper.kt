@@ -11,8 +11,11 @@ class DslVisitorWrapper(
     visitor?.onName(name)
   }
 
-  override fun onInitialState(initialState: KClass<out Any>) {
-    visitor?.onInitialState(initialState)
+  override fun onInitialState(
+    initialState: KClass<out Any>,
+    effects: Set<KClass<out Any>>
+  ) {
+    visitor?.onInitialState(initialState, effects)
   }
 
   override fun onState(state: KClass<out Any>) {

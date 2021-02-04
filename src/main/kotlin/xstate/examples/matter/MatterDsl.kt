@@ -16,7 +16,7 @@ fun main() {
 }
 
 val matterDsl = Machine.create<MatterState, MatterEvent, Nothing>("Matter") {
-  initial(Solid::class)
+  initial(state = Solid::class)
 
   state(Solid::class) {
     on(Melt::class, next = Liquid::class)

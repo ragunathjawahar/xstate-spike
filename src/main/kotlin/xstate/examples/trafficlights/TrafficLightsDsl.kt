@@ -16,7 +16,7 @@ import xstate.visitors.mobius.ReductionResult.StateEffect
 
 val trafficLightsStateMachine = Machine
   .create<TrafficLightsState, TrafficLightsEvent, TrafficLightsEffect>("Traffic Lights") {
-    initial(Green::class)
+    initial(state = Green::class, effects = setOf(BeginCountDown::class))
 
     state(Green::class) {
       on(

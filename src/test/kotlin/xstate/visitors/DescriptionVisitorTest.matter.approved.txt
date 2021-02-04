@@ -1,7 +1,7 @@
 =============================
 States & transitions (Matter)
 =============================
-Initial: Solid
+Initial: Solid, effects: []
 => Solid
     on: Melt -> Liquid, effects: []
 => Liquid

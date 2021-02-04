@@ -21,10 +21,11 @@ class Machine<S : Any, E : Any, F : Any> private constructor(
 
 
   fun initial(
-    state: KClass<out S>
+    state: KClass<out S>,
+    effects: Set<KClass<out F>> = emptySet()
   ) {
     visitorWrapper.onName(name)
-    visitorWrapper.onInitialState(state)
+    visitorWrapper.onInitialState(state, effects)
   }
 
   fun state(
