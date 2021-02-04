@@ -1,13 +1,23 @@
 {
-  "initial": "Solid",
   "id": "Matter",
+  "initial": "Solid",
   "states": {
-    "Liquid": {"on": {
-      "Vaporize": "Gas",
-      "Freeze": "Solid"
-    }},
-    "Gas": {"on": {"Condense": "Liquid"}},
-    "Solid": {"on": {"Melt": "Liquid"}}
+    "Solid": {
+      "on": {
+        "Melt": "Liquid"
+      }
+    },
+    "Liquid": {
+      "on": {
+        "Vaporize": "Gas",
+        "Freeze": "Solid"
+      }
+    },
+    "Gas": {
+      "on": {
+        "Condense": "Liquid"
+      }
+    }
   }
 }
 

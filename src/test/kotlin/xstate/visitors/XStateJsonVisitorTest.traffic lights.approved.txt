@@ -1,10 +1,22 @@
 {
-  "initial": "Green",
   "id": "Traffic Lights",
+  "initial": "Green",
   "states": {
-    "Red": {"on": {"CountDownElapsed": "Green"}},
-    "Yellow": {"on": {"CountDownElapsed": "Red"}},
-    "Green": {"on": {"CountDownElapsed": "Yellow"}}
+    "Green": {
+      "on": {
+        "CountDownElapsed": "Yellow"
+      }
+    },
+    "Yellow": {
+      "on": {
+        "CountDownElapsed": "Red"
+      }
+    },
+    "Red": {
+      "on": {
+        "CountDownElapsed": "Green"
+      }
+    }
   }
 }
 
