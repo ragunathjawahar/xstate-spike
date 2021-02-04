@@ -13,7 +13,6 @@ repositories {
 }
 
 dependencies {
-    implementation("org.json:json:20180130")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.21")
     implementation("com.spotify.mobius:mobius-core:1.5.3")
     implementation("com.spotify.mobius:mobius-rx2:1.5.3")
