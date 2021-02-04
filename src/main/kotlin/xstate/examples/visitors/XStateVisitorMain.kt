@@ -1,9 +1,10 @@
 package xstate.examples.visitors
 
-import xstate.examples.trafficlights.runTrafficLightsVisitor
+import xstate.examples.trafficlights.trafficLightsStateMachine
+import xstate.runVisitor
 import xstate.visitors.XStateJsonVisitor
 
 fun main() {
-  val visitor = runTrafficLightsVisitor(XStateJsonVisitor()) as XStateJsonVisitor
+  val visitor = runVisitor(trafficLightsStateMachine, XStateJsonVisitor())
   println(visitor.json)
 }

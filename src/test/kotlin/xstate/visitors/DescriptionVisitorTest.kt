@@ -2,14 +2,13 @@ package xstate.visitors
 
 import org.approvaltests.Approvals
 import org.junit.jupiter.api.Test
-import xstate.examples.trafficlights.runTrafficLightsVisitor
+import xstate.examples.trafficlights.trafficLightsStateMachine
+import xstate.runVisitor
 
 internal class DescriptionVisitorTest {
-  private val visitor = DescriptionVisitor()
-
   @Test
   fun `traffic lights`() {
-    runTrafficLightsVisitor(visitor)
-    Approvals.verify(visitor.description)
+    Approvals
+      .verify(runVisitor(trafficLightsStateMachine, DescriptionVisitor()).description)
   }
 }

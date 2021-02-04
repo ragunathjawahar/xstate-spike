@@ -29,10 +29,11 @@ class Machine<S : Any, E : Any, F : Any> private constructor(
     builder(States(visitorWrapper))
   }
 
-  fun visit(visitor: DslVisitor) {
+  fun <V : DslVisitor> visit(visitor: V): V {
     visitorWrapper.visitor = visitor
     definition()
     visitorWrapper.visitor = null
+    return visitor
   }
 }
 
