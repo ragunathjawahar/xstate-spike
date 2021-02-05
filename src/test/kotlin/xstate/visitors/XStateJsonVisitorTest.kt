@@ -3,6 +3,7 @@ package xstate.visitors
 import org.approvaltests.Approvals
 import org.junit.jupiter.api.Test
 import xstate.examples.matter.matterDsl
+import xstate.examples.openproject.greetUserDsl
 import xstate.examples.trafficlights.trafficLightsStateMachine
 import xstate.runVisitor
 
@@ -19,5 +20,11 @@ internal class XStateJsonVisitorTest {
   fun matter() {
     Approvals
       .verify(runVisitor(matterDsl, visitor).json)
+  }
+
+  @Test
+  fun `greet user`() {
+    Approvals
+      .verify(runVisitor(greetUserDsl, visitor).json)
   }
 }

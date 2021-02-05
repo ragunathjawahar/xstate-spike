@@ -5,6 +5,7 @@ import xstate.visitors.DslVisitorWrapper
 import xstate.visitors.mobius.Reducer
 import xstate.visitors.mobius.Reducer.Companion.NoOpReducer
 
+// TODO: 05/02/21 Expand type parameter names - State, Event, Effect
 class Machine<S : Any, E : Any, F : Any> private constructor(
   private val name: String,
   private val definition: Machine<S, E, F>.() -> Unit
@@ -30,7 +31,7 @@ class Machine<S : Any, E : Any, F : Any> private constructor(
 
   fun state(
     state: KClass<out S>,
-    definition: State<S, E, F>.() -> Unit
+    definition: State<S, E, F>.() -> Unit = {}
   ) {
     visitorWrapper.onState(state)
     definition(State(visitorWrapper))

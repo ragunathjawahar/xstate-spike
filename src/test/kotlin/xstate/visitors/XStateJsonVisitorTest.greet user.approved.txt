@@ -1,0 +1,17 @@
+{
+  "id": "Open Project",
+  "initial": "GettingGitUsername",
+  "states": {
+    "GettingGitUsername": {
+      "on": {
+        "GitUsernameFound": "PersonalizedGreeting",
+        "GitUsernameNotFound": "GenericGreeting",
+        "UnableToGetGitUsername": "GenericGreeting"
+      }
+    },
+    "PersonalizedGreeting": {},
+    "GenericGreeting": {}
+  }
+}
+
+~ NOTE: Link to the viz tool: https://xstate.js.org/viz/ ~

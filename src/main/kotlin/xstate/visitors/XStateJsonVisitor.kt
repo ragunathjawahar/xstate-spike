@@ -47,7 +47,7 @@ class XStateJsonVisitor : DslVisitor {
 
   override fun onState(state: KClass<out Any>) {
     currentStateClass = state
-    statesAndTransitions[state.simpleName]
+    statesAndTransitions[state.simpleName!!] = mutableListOf()
   }
 
   override fun onTransition(
@@ -59,11 +59,7 @@ class XStateJsonVisitor : DslVisitor {
     val containsTransitionsForState = statesAndTransitions.containsKey(currentStateClass.simpleName)
     val transition = Transition(event.simpleName!!, next.simpleName!!)
 
-    if (containsTransitionsForState) {
-      statesAndTransitions[currentStateClass.simpleName]!!.add(transition)
-    } else {
-      statesAndTransitions[currentStateClass.simpleName!!] = mutableListOf(transition)
-    }
+    statesAndTransitions[currentStateClass.simpleName]!!.add(transition)
   }
 
   private fun buildXStateJsonObject(): JsonObject {
@@ -83,7 +79,9 @@ class XStateJsonVisitor : DslVisitor {
           .onEach { (eventName, nextStateName) -> transitionsJsonObject.add(eventName, JsonPrimitive(nextStateName)) }
 
         val onJsonObject = JsonObject().apply {
-          add(KEY_ON, transitionsJsonObject)
+          if (transitions.isNotEmpty()) {
+            add(KEY_ON, transitionsJsonObject)
+          }
         }
 
         statesObject.add(stateName, onJsonObject)
