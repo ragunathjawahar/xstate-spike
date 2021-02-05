@@ -30,9 +30,17 @@ class DescriptionVisitor : DslVisitor {
       .append("\n")
   }
 
-  override fun onState(state: KClass<out Any>) {
+  override fun onState(
+    state: KClass<out Any>,
+    final: Boolean
+  ) {
     summaryBuilder
       .append("=> ${state.java.simpleName}")
+      .apply {
+        if (final) {
+          append(" (final)")
+        }
+      }
       .append("\n")
   }
 

@@ -49,7 +49,10 @@ class MobiusVisitor : DslVisitor {
     initialEffectClasses = effects
   }
 
-  override fun onState(state: KClass<out Any>) {
+  override fun onState(
+    state: KClass<out Any>,
+    final: Boolean
+  ) {
     currentStateClass = state
   }
 

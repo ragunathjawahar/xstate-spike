@@ -11,7 +11,10 @@ interface DslVisitor {
     effects: Set<KClass<out Any>>
   )
 
-  fun onState(state: KClass<out Any>)
+  fun onState(
+    state: KClass<out Any>,
+    final: Boolean
+  )
 
   fun onTransition(
     event: KClass<out Any>,

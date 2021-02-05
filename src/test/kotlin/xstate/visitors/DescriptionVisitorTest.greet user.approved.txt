@@ -6,5 +6,5 @@ Initial: GettingGitUsername, effects: [GetGitUsername]
     on: GitUsernameFound -> PersonalizedGreeting, effects: []
     on: GitUsernameNotFound -> GenericGreeting, effects: []
     on: UnableToGetGitUsername -> GenericGreeting, effects: []
-=> PersonalizedGreeting
-=> GenericGreeting
+=> PersonalizedGreeting (final)
+=> GenericGreeting (final)

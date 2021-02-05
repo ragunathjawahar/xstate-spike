@@ -31,9 +31,10 @@ class Machine<S : Any, E : Any, F : Any> private constructor(
 
   fun state(
     state: KClass<out S>,
+    final: Boolean = false,
     definition: State<S, E, F>.() -> Unit = {}
   ) {
-    visitorWrapper.onState(state)
+    visitorWrapper.onState(state, final)
     definition(State(visitorWrapper))
   }
 

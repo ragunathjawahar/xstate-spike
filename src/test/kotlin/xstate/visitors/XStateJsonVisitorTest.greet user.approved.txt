@@ -9,8 +9,12 @@
         "UnableToGetGitUsername": "GenericGreeting"
       }
     },
-    "PersonalizedGreeting": {},
-    "GenericGreeting": {}
+    "PersonalizedGreeting": {
+      "type": "final"
+    },
+    "GenericGreeting": {
+      "type": "final"
+    }
   }
 }
 

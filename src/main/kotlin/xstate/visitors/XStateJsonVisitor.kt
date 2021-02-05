@@ -17,6 +17,8 @@ class XStateJsonVisitor : DslVisitor {
     private const val KEY_INITIAL = "initial"
     private const val KEY_STATES = "states"
     private const val KEY_ON = "on"
+    private const val KEY_TYPE = "type"
+    private const val VALUE_FINAL = "final"
 
     private const val XSTATE_VIZ_LINK = "https://xstate.js.org/viz/"
     private const val XSTATE_NOTE = "\n\n~ NOTE: Link to the viz tool: $XSTATE_VIZ_LINK ~"
@@ -32,6 +34,7 @@ class XStateJsonVisitor : DslVisitor {
   private lateinit var machineName: String
   private lateinit var initialStateName: StateName
   private lateinit var currentStateClass: KClass<out Any>
+  private val finalStateNames = mutableListOf<StateName>()
   private val statesAndTransitions = linkedMapOf<StateName, MutableList<Transition>>()
 
   override fun onName(name: String) {
@@ -45,9 +48,15 @@ class XStateJsonVisitor : DslVisitor {
     initialStateName = initialState.simpleName!!
   }
 
-  override fun onState(state: KClass<out Any>) {
+  override fun onState(
+    state: KClass<out Any>,
+    final: Boolean
+  ) {
     currentStateClass = state
     statesAndTransitions[state.simpleName!!] = mutableListOf()
+    if (final) {
+      finalStateNames.add(state.simpleName!!)
+    }
   }
 
   override fun onTransition(
@@ -56,9 +65,7 @@ class XStateJsonVisitor : DslVisitor {
     effects: Set<KClass<out Any>>,
     reducer: KClass<out Reducer<out Any, out Any>>
   ) {
-    val containsTransitionsForState = statesAndTransitions.containsKey(currentStateClass.simpleName)
     val transition = Transition(event.simpleName!!, next.simpleName!!)
-
     statesAndTransitions[currentStateClass.simpleName]!!.add(transition)
   }
 
@@ -81,6 +88,10 @@ class XStateJsonVisitor : DslVisitor {
         val onJsonObject = JsonObject().apply {
           if (transitions.isNotEmpty()) {
             add(KEY_ON, transitionsJsonObject)
+          }
+
+          if (finalStateNames.contains(stateName)) {
+            add(KEY_TYPE, JsonPrimitive(VALUE_FINAL))
           }
         }
 

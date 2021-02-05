@@ -26,8 +26,8 @@ val greetUserDsl = Machine
       on(UnableToGetGitUsername::class, next = GenericGreeting::class)
     }
 
-    state(PersonalizedGreeting::class)
-    state(GenericGreeting::class)
+    state(PersonalizedGreeting::class, final = true)
+    state(GenericGreeting::class, final = true)
   }
 
 sealed class OpenProjectState {
